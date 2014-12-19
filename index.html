@@ -1,0 +1,57 @@
+<!DOCTYPE Html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Save Hero Joe</title>
+
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/tictacController.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>`
+
+  <body ng-app="tictacApp">
+    <div id="header">SAVE HERO JOE</div>
+    <h3>a tic tac toe game</h3>
+    
+    <div class="container" ng-controller="tictacController as tictac"> 
+    
+          <div class="leftplayer">
+            <input type="text" placeholder="Your name here.">
+          </div>
+
+          <div class="rightplayer"> 
+            <input type="text" placeholder="{{tictac.playerTwo}}">
+          </div> 
+
+       <div class="boardcontainer">
+          <table class="tablestyle">
+	      		 <tr>
+	      		   <td ng-click="tictac.playTile(0)">{{ tictac.gameBoard[0] }}</td>
+	      		   <td ng-click="tictac.playTile(1)">{{ tictac.gameBoard[1] }}</td>
+	      		   <td ng-click="tictac.playTile(2)">{{ tictac.gameBoard[2] }}</td>
+	      		 </tr>
+	           <tr>
+               <td ng-click="tictac.playTile(3)">{{ tictac.gameBoard[3] }}</td>
+               <td ng-click="tictac.playTile(4)">{{ tictac.gameBoard[4] }}</td>
+               <td ng-click="tictac.playTile(5)">{{ tictac.gameBoard[5] }}</td>
+             </tr>
+            <tr>
+               <td ng-click="tictac.playTile(6)">{{ tictac.gameBoard[6] }}</td>
+               <td ng-click="tictac.playTile(7)">{{ tictac.gameBoard[7] }}</td>
+               <td ng-click="tictac.playTile(8)">{{ tictac.gameBoard[8] }}</td>
+             </tr>
+	      		</table>
+            <button ng-click="resetGame()">My Div</button>
+        </div>
+      </div>
+
+</body>
+             
+          
+
+
+  
