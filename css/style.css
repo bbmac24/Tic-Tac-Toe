@@ -33,6 +33,7 @@ body {
 	margin-right: auto;
 	margin-left: auto;
 	background-color: white;
+
 }
 
 .leftplayer {
@@ -41,7 +42,7 @@ body {
 	color: red;
 	display: inline-block;
 	float: left;
-	maring: 10px;
+	margin: 10px;
 }
 
 .rightplayer {
@@ -66,8 +67,18 @@ td {
   font-size:  35px;
   font-family: arial; 
   font-weight: bold;
+  position: relative;
+
 }
 
 td:hover {
 	background-color: rgb(220, 230, 230);
+}
+
+.p1 {
+
+}
+
+.p2 {
+
 }
