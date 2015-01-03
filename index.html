@@ -7,7 +7,9 @@
 
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/normalize.css">
-    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script src="js/tictacController.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>`
@@ -16,7 +18,11 @@
     <div id="header">SAVE HERO JOE</div>
     <h3>a tic tac toe game</h3>
     
-    <div class="container" ng-controller="tictacController as tictac"> 
+    <div class="container" ng-controller="tictacController as tictac">
+        <div ng-show="tictac.message">
+          {{tictac.message}}
+          <span ng-show="tictac.messageNewGame"><button ng-click="tictac.newGame()">Play Again</button></span>
+        </div>
     
           <div class="leftplayer">
             <form ng-show="tictac.formOne" ng-submit="tictac.submitGame(1)"> 
@@ -24,50 +30,73 @@
             </form>
             
              <p ng-show="tictac.playerOneWelcome"> Welcome!, {{ tictac.playerOne }}</p> 
+           </div>
 
-          </div>
-
+          <!-- rightplayer class -->
           <div class="rightplayer"> 
             <form ng-show="tictac.formTwo" ng-submit="tictac.submitGame(2)"> 
             <input type="text" placeholder="Your name here." ng-model="tictac.inputTwo">
             </form>
-
             <p ng-show="tictac.playerTwoWelcome"> Welcome!, {{ tictac.playerTwo }}</p> 
-    
-          </div> 
-
-          
-       <div class="boardcontainer">
-          <table class="tablestyle">
-	      		 <tr>
-	      		   <td ng-class="{X: tictac.gameBoard[0] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(0)">{{ tictac.gameBoard[0] }}</td>
-	      		   <td ng-class="{X: tictac.gameBoard[1] == 'p1', O;squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(1)">{{ tictac.gameBoard[1] }}</td>
-	      		   <td ng-class="{X: tictac.gameBoard[2] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(2)">{{ tictac.gameBoard[2] }}</td>
-	      		 </tr>
-	           <tr>
-               <td ng-class="{X: tictac.gameBoard[3] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(3)">{{ tictac.gameBoard[3] }}</td>
-               <td ng-class="{X: tictac.gameBoard[4] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(4)">{{ tictac.gameBoard[4] }}</td>
-               <td ng-class="{X: tictac.gameBoard[5] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(5)">{{ tictac.gameBoard[5] }}</td>
+          </div>
+         
+         <!-- restart game function  -->
+          <div ng-show="tictac.started" id="restartgame">
+            <button ng-click="tictac.restartGame()">Restart Game</button>
+          </div>
+         
+         <!-- scoreboard layout -->
+         <div ng-show="tictac.started" id="scoreboard">
+            <table id="scoretable">
+              <tr>
+                <td>Total:</td>
+                <td>{{ tictac.stat.Total }}</td>
+              </tr>
+              <tr>
+                <td>X wins:</td>
+                <td>{{ tictac.stat.Xwins }}</td>
+              </tr>
+              <tr>
+                <td>O wins:</td>
+                <td>{{ tictac.stat.Owins }}</td>
+              </tr>
+              <tr>
+                <td>Draw:</td>
+                <td>{{ tictac.stat.Draw }}</td>
+              </tr>
+            </table>
+          </div>
+       
+       <!-- scoreboard layout -->
+       <div id="playbutton" ng-show="tictac.playerOneWelcome && tictac.playerTwoWelcome">
+         <p>Are you ready?</p> 
+         <button ng-click="tictac.startGame()">YES</button>
+         <button>NO</button>
+       </div>
+       <div class="boardcontainer" ng-show="tictac.started">
+          <table class="tablestyle" >
+             <tr>
+               <td ng-class="{X: tictac.gameBoard[0] == 'x', O:tictac.gameBoard[0] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(0)"></td>
+               <td ng-class="{X: tictac.gameBoard[1] == 'x', O:tictac.gameBoard[1] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(1)"></td>
+               <td ng-class="{X: tictac.gameBoard[2] == 'X', O:tictac.gameBoard[2] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(2)"></td>
+             </tr>
+             <tr>
+               <td ng-class="{X: tictac.gameBoard[3] == 'x', O:tictac.gameBoard[3] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(3)"></td>
+               <td ng-class="{X: tictac.gameBoard[4] == 'X', O:tictac.gameBoard[4] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(4)"></td>
+               <td ng-class="{X: tictac.gameBoard[5] == 'X', O:tictac.gameBoard[5] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(5)"></td>
              </tr>
             <tr>
-               <td ng-class="{X: tictac.gameBoard[6] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(6)">{{ tictac.gameBoard[6] }}</td>
-               <td ng-class="{X: tictac.gameBoard[7] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(7)">{{ tictac.gameBoard[7] }}</td>
-               <td ng-class="{X: tictac.gameBoard[8] == 'p1', O:squareowner == 'p2'}" ng-click="tictac.gameDisabled || tictac.playTile(8)">{{ tictac.gameBoard[8] }}</td>
+               <td ng-class="{X: tictac.gameBoard[6] == 'x', O:tictac.gameBoard[6] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(6)"></td>
+               <td ng-class="{X: tictac.gameBoard[7] == 'x', O:tictac.gameBoard[7] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(7)"></td>
+               <td ng-class="{X: tictac.gameBoard[8] == 'x', O:tictac.gameBoard[8] == 'o'}" ng-click="tictac.gameDisabled || tictac.playTile(8)"></td>
              </tr>
-	      		</table>
-        </div>
-
-        <div id="playbutton" ng-show="tictac.playerOneWelcome && tictac.playerTwoWelcome"> 
-          <p>Are you ready?</p> 
-          <button ng-click="tictac.startGame()">YES</button>
-          <button>NO</button>
+            </table>
         </div>
 
       </div>
 
 </body>
-             
+</html>   
           
-
-
-  
+          
+       
